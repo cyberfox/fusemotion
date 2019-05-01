@@ -14,7 +14,6 @@ class AppDelegate
   end
 
   def applicationDidFinishLaunching(notification)
-    buildMenu
     buildWindow
 
     @center = NSNotificationCenter.defaultCenter
@@ -41,11 +40,23 @@ class AppDelegate
   end
 
   def buildWindow
-    @mainWindow = NSWindow.alloc.initWithContentRect([[240, 180], [480, 360]],
-      styleMask: NSTitledWindowMask|NSClosableWindowMask|NSMiniaturizableWindowMask|NSResizableWindowMask,
-      backing: NSBackingStoreBuffered,
-      defer: false)
-    @mainWindow.title = NSBundle.mainBundle.infoDictionary['CFBundleName']
-    @mainWindow.orderFrontRegardless
+    @status_item = NSStatusBar.systemStatusBar.statusItemWithLength(NSVariableStatusItemLength).init.tap do |menubar|
+      menubar.setMenu buildMenu
+      menubar.button.setImage(NSImage.imageNamed('disc-drive.png'))
+    end
+  end
+
+  def buildMenu
+    appName = NSBundle.mainBundle.infoDictionary['CFBundleName']
+
+    @menu ||= NSMenu.new.tap do |menu|
+      menu.initWithTitle appName
+      menu.addItem NSMenuItem.separatorItem
+      menu.addItem NSMenuItem.alloc.initWithTitle("About #{appName}", action: 'orderFrontStandardAboutPanel:', keyEquivalent: '')
+      menu.addItem NSMenuItem.separatorItem
+      menu.addItem NSMenuItem.alloc.initWithTitle('Preferences', action: 'openPreferences:', keyEquivalent: ',')
+      menu.addItem NSMenuItem.separatorItem
+      menu.addItem NSMenuItem.alloc.initWithTitle("Quit #{appName}", action: 'terminate:', keyEquivalent: 'q')
+    end
   end
 end

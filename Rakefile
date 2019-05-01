@@ -14,5 +14,6 @@ Motion::Project::App.setup do |app|
   app.name = 'fuse'
   app.deployment_target = '10.13'
   app.info_plist['CFBundleIconName'] = 'AppIcon'
+  app.info_plist['LSUIElement'] = true
   app.embedded_frameworks << '/Library/Frameworks/OSXFUSE.framework'
 end
