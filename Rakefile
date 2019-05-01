@@ -11,7 +11,7 @@ end
 
 Motion::Project::App.setup do |app|
   # Use `rake config' to see complete project settings.
-  app.name = 'fuse'
+  app.name = 'fusemotion'
   app.deployment_target = '10.13'
   app.info_plist['CFBundleIconName'] = 'AppIcon'
   app.info_plist['LSUIElement'] = true
