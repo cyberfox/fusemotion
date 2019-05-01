@@ -14,7 +14,5 @@ Motion::Project::App.setup do |app|
   app.name = 'fuse'
   app.deployment_target = '10.13'
   app.info_plist['CFBundleIconName'] = 'AppIcon'
-  app.bridgesupport_files << '/Users/mrs/Projects/fuse/OSXFUSE.bridgesupport'
-  app.framework_search_paths << '/Library/Frameworks'
-  app.frameworks << 'OSXFUSE'
+  app.embedded_frameworks << '/Library/Frameworks/OSXFUSE.framework'
 end
