@@ -1,0 +1,20 @@
+$:.unshift("/Library/RubyMotion/lib")
+$:.unshift("~/.rubymotion/rubymotion-templates")
+
+require 'motion/project/template/osx'
+
+begin
+  require 'bundler'
+  Bundler.require
+rescue LoadError
+end
+
+Motion::Project::App.setup do |app|
+  # Use `rake config' to see complete project settings.
+  app.name = 'fuse'
+  app.deployment_target = '10.13'
+  app.info_plist['CFBundleIconName'] = 'AppIcon'
+  app.bridgesupport_files << '/Users/mrs/Projects/fuse/OSXFUSE.bridgesupport'
+  app.framework_search_paths << '/Library/Frameworks'
+  app.frameworks << 'OSXFUSE'
+end
