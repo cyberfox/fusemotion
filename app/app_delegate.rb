@@ -3,7 +3,6 @@ class AppDelegate
 
   def didMount(notification)
     userInfo = notification.userInfo
-    puts userInfo.inspect
     mountPath = userInfo[KGMUserFileSystemMountPathKey]
     parentPath = mountPath.stringByDeletingLastPathComponent
     NSWorkspace.sharedWorkspace.selectFile(mountPath, inFileViewerRootedAtPath: parentPath)

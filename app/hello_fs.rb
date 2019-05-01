@@ -5,7 +5,6 @@ class HelloFs
   end
 
   def contentsOfDirectoryAtPath(path, error: error)
-    NSLog "Checking contents of directory at path: %@...", path
     return [HELLO_PATH.lastPathComponent]
   end
 
