@@ -1,29 +1,40 @@
 class HelloFs
-  HELLO_PATH='/hello.txt'
+  ICON_FILE = NSBundle.mainBundle.pathForResource("hellodoc", ofType:"icns")
+  ICON_DATA = NSData.dataWithContentsOfFile(ICON_FILE)
+
+  FILES = {
+    '/hello.txt' => {
+      attributes: { NSFileType => NSFileTypeRegular  },
+      finderAttributes: { KGMUserFileSystemFinderFlagsKey => KHasCustomIcon },
+      resourceAttributes: { KGMUserFileSystemCustomIconDataKey => ICON_DATA },
+      body: "Hello, world!\n".dataUsingEncoding(NSUTF8StringEncoding)
+    }
+  }
 
   def initialize
-    @body = "Hello, world!\n".dataUsingEncoding(NSUTF8StringEncoding)
-    icon_file = NSBundle.mainBundle.pathForResource("hellodoc", ofType:"icns")
-    @icon_data = NSData.dataWithContentsOfFile(icon_file)
   end
 
   def contentsOfDirectoryAtPath(path, error: error)
-    return [HELLO_PATH.lastPathComponent]
+    return FILES.keys.map(&:lastPathComponent)
   end
 
   def contentsAtPath(path)
-    @body if path == HELLO_PATH
+    FILES[path][:body] if FILES.include? path
   end
 
   def attributesOfItemAtPath(path, userData: userData, error: error)
-    { NSFileSize => @body.length, NSFileType => NSFileTypeRegular  } if path == HELLO_PATH
+    if FILES.include? path
+      file = FILES[path]
+      file_attributes = file[:attributes]
+      file_attributes.merge(NSFileSize => file[:body].length)
+    end
   end
 
   def finderAttributesAtPath(path, error: error)
-    { KGMUserFileSystemFinderFlagsKey => KHasCustomIcon } if path == HELLO_PATH
+    FILES[path][:finderAttributes] if FILES.include? path
   end
 
   def resourceAttributesAtPath(path, error: error)
-    { KGMUserFileSystemCustomIconDataKey => @icon_data } if path == HELLO_PATH
+    FILES[path][:resourceAttributes] if FILES.include? path
   end
 end
